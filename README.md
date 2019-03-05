@@ -55,6 +55,17 @@ Route::get('/', function () {
 
 > 一般来说只应该缓存 get 请求的页面
 
+## URL 请求方法
+
+```
+跳过缓存
+http://abc.com/?skipcache=1
+清空缓存
+http://abc.com/?flushcache=1
+清除当前地址缓存
+http://abc.com/?clearcache=1
+```
+
 ## 附录
 
 **缓存规则**
