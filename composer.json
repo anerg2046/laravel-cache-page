@@ -1,0 +1,29 @@
+{
+    "name": "anerg2046/laravel-cache-page",
+    "description": "Laravel中间件-Response缓存",
+    "keywords": [
+        "laravel",
+        "middleware",
+        "cache",
+        "response",
+        "page",
+        "中间件",
+        "缓存"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Coeus",
+            "email": "r.anerg@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "anerg\\Laravel\\Http\\": "src/"
+        }
+    }
+}
