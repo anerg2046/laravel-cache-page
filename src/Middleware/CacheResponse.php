@@ -98,7 +98,7 @@ class CacheResponse
             }
             $this->responseCache = Cache::tags(self::CACHE_TAG)->remember(
                 $this->cacheKey,
-                $this->minutes,
+                $this->minutes * 60,
                 function () {
                     $this->cacheMissed();
                     $response = ($this->next)($this->request);
@@ -113,7 +113,7 @@ class CacheResponse
             }
             $this->responseCache = Cache::remember(
                 $this->cacheKey,
-                $this->minutes,
+                $this->minutes * 60,
                 function () {
                     $this->cacheMissed();
                     $response = ($this->next)($this->request);
