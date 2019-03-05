@@ -16,6 +16,12 @@
 composer require anerg2046/laravel-cache-page
 ```
 
+5.7 请使用
+
+```sh
+composer require anerg2046/laravel-cache-page ^1.0
+```
+
 ## 配置
 
 > `\app\Http\Kernel.php`文件中`$routeMiddleware`增加：
