@@ -53,7 +53,8 @@ class CacheResponse
      */
     public function handle($request, Closure $next, $minutes = null)
     {
-        if (config('pagecache.skip') || (config('pagecache.allowSkip') && $request->query('skipcache') == 1)) {
+        //非GET请求不做页面缓存
+        if (config('pagecache.skip') || (config('pagecache.allowSkip') && $request->query('skipcache') == 1) || !$request->isMethod('get')) {
             return $next($request);
         }
 
@@ -178,7 +179,8 @@ class CacheResponse
                 unset($querys[$querykey]);
             }
         }
-        return md5($this->request->url() . json_encode($querys));
+        //有时候请求地址一致，但可能是ajax，也可能是页面
+        return md5($this->request->url() . json_encode($querys) . $this->request->server('HTTP_X_REQUESTED_WITH'));
     }
     /**
      * 获取缓存的分钟
