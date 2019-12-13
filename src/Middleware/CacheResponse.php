@@ -51,7 +51,7 @@ class CacheResponse
      *
      * @return mixed
      */
-    public function handle($request, Closure $next, $minutes = null)
+    public function handle($request, Closure $next, $minutes = NULL)
     {
         //非GET请求不做页面缓存
         if (config('pagecache.skip') || (config('pagecache.allowSkip') && $request->query('skipcache') == 1) || !$request->isMethod('get')) {
@@ -68,17 +68,17 @@ class CacheResponse
 
         $this->responseCache();
 
-        $response = response($this->responseCache['content']);
+        $response = response($this->responseCache['content'])->withHeaders($this->responseCache['headers']);
 
         return $this->addHeaders($response);
     }
 
-/**
- * 预备
- *
- * @return mixed
- */
-    protected function prepare($request, Closure $next, $minutes = null)
+    /**
+     * 预备
+     *
+     * @return mixed
+     */
+    protected function prepare($request, Closure $next, $minutes = NULL)
     {
         $this->request = $request;
         $this->next    = $next;
@@ -86,6 +86,7 @@ class CacheResponse
         $this->cacheKey = $this->resolveKey();
         $this->minutes  = $this->resolveMinutes($minutes);
     }
+
     /**
      * 生成或读取Response-Cache
      *
@@ -126,6 +127,7 @@ class CacheResponse
         }
         return $this->responseCache;
     }
+
     /**
      * 确定需要缓存Response的数据
      *
@@ -136,9 +138,11 @@ class CacheResponse
     protected function resolveResponseCache($response)
     {
         return [
-            'content' => $response->getContent(),
+            'headers' => $response->headers->allPreserveCaseWithoutCookies(),
+            'content' => $response->getContent()
         ];
     }
+
     /**
      * 追加Headers
      *
@@ -151,6 +155,7 @@ class CacheResponse
         );
         return $response;
     }
+
     /**
      * 返回Headers
      *
@@ -165,6 +170,7 @@ class CacheResponse
         ];
         return $headers;
     }
+
     /**
      * 根据请求获取指定的Key
      *
@@ -182,6 +188,7 @@ class CacheResponse
         //有时候请求地址一致，但可能是ajax，也可能是页面
         return md5($this->request->url() . json_encode($querys) . $this->request->server('HTTP_X_REQUESTED_WITH'));
     }
+
     /**
      * 获取缓存的分钟
      *
@@ -189,12 +196,13 @@ class CacheResponse
      *
      * @return int
      */
-    protected function resolveMinutes($minutes = null)
+    protected function resolveMinutes($minutes = NULL)
     {
         return is_null($minutes)
-        ? $this->getDefaultMinutes()
-        : max($this->getDefaultMinutes(), intval($minutes));
+            ? $this->getDefaultMinutes()
+            : max($this->getDefaultMinutes(), intval($minutes));
     }
+
     /**
      * 返回默认的缓存时间（分钟）
      *
@@ -204,6 +212,7 @@ class CacheResponse
     {
         return 10;
     }
+
     /**
      * 缓存未命中
      *
